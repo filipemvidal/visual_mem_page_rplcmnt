@@ -4,7 +4,7 @@ from algorithms.base import PageReplacementAlgorithm
 from controllers.events import SimulationEvent
 
 
-class FIFO(PageReplacementAlgorithm):
+class FCFS(PageReplacementAlgorithm):
 
     def __init__(self, capacity: int):
         self.capacity = capacity

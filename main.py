@@ -1,4 +1,4 @@
-from algorithms.fifo import FIFO
+from algorithms.fcfs import FCFS
 from algorithms.lru import LRU
 from controllers.simulator import Simulator
 from views.console import ConsoleView
@@ -21,7 +21,7 @@ def main():
     print("x*" * 20)
     print("Running FIFO Simulation:")
     print("x*" * 20 + "\n")
-    run_simulation(FIFO, capacity=3, references=references)
+    run_simulation(FCFS, capacity=3, references=references)
     
     print("\n\n" + "x*" * 20)
     print("Running LRU Simulation:")
