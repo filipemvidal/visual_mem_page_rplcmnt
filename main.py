@@ -1,4 +1,5 @@
 from algorithms.fcfs import FCFS
+from algorithms.lfu import LFU
 from algorithms.lru import LRU
 from controllers.simulator import Simulator
 from views.console import ConsoleView
@@ -10,9 +11,11 @@ def run_simulation(algorithm_class, capacity: int, references: list[int]):
     view = ConsoleView()
     events = simulator.run(references)
 
-    for event in events:
-        view.display(event)
-        sleep(1)
+    for i, event in enumerate(events):
+        view.record(i + 1, event)
+
+    view.render()
+    view.summary()
 
 def main():
 
@@ -27,6 +30,11 @@ def main():
     print("Running LRU Simulation:")
     print("x*" * 20 + "\n")
     run_simulation(LRU, capacity=3, references=references)
+
+    print("\n\n" + "x*" * 20)
+    print("Running LFU Simulation:")
+    print("x*" * 20 + "\n")
+    run_simulation(LFU, capacity=3, references=references)
 
 
 if __name__ == "__main__":
