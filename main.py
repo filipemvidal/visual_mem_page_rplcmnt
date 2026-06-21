@@ -1,6 +1,4 @@
-from algorithms.fcfs import FCFS
-from algorithms.lfu import LFU
-from algorithms.lru import LRU
+from algorithms import *
 from controllers.simulator import Simulator
 from views.console import ConsoleView
 
