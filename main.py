@@ -19,7 +19,7 @@ def main():
     references = [1, 2, 3, 1, 4, 2, 5, 1]
 
     print("x*" * 20)
-    print("Executando Simulação FIFO:")
+    print("Executando Simulação FCFS:")
     print("x*" * 20 + "\n")
     run_simulation(FCFS, capacity=3, references=references)
     

@@ -34,7 +34,7 @@ class ConsoleView:
 
     def render(self):
 
-        print("\nPASSO | PAGE | FAULT | REMOVED | FRAMES")
+        print("\nACESSO | PAGE | FAULT | REMOVED | FRAMES")
         print("-" * 50)
 
         for r in self.rows:
