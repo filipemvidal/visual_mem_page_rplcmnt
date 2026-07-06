@@ -9,13 +9,13 @@ class Table(Object):
     cell_width = 100
     cell_height = 50
 
-    def __init__(self, surface, x, y, title, cells = []):
-        super().__init__(surface, x, y)
+    def __init__(self, x, y, title, cells = []):
+        super().__init__(x, y)
         self.title = title
         self.cells = cells
 
     def create_cell(self, text):
-        cell = Cell(self.surface, 0, (len(self.cells) + 1) * self.cell_height, self, text, self.cell_width, self.cell_height)
+        cell = Cell(0, (len(self.cells) + 1) * self.cell_height, self, text, self.cell_width, self.cell_height)
         self.add_cell(cell)
         return cell
 
@@ -24,14 +24,17 @@ class Table(Object):
             raise TypeError("cell must be an instance of Cell class")
         self.cells.append(cell)
 
-    def draw(self):
+    def update(self, surface, delta_time):
+        self.draw(surface)
+
+    def draw(self, surface):
         font = pygame.font.Font(None, 36)
         title_surface = font.render(self.title, True, BLACK, None)
-        self.surface.blit(title_surface, (self.x, self.y))
+        surface.blit(title_surface, (self.x, self.y))
 
 class Cell(Object):
-    def __init__(self, surface, _x, _y, table : Table, text, width=100, height=50):
-        super().__init__(surface, _x, _y)
+    def __init__(self, _x, _y, table : Table, text, width=100, height=50):
+        super().__init__(_x, _y)
         self.text = text
         self.table = table
         self.width = width
@@ -50,17 +53,17 @@ class Cell(Object):
         self.x = _x
         self.y = _y
 
-    def update(self, delta_time):
-        self.draw()
+    def update(self, surface, delta_time):
+        self.draw(surface)
 
-    def draw(self):
+    def draw(self, surface):
         # Desenha a célula
         cell_rect = pygame.Rect(self.table.x + self.x, self.table.y + self.y, self.width, self.height)
-        pygame.draw.rect(self.surface, WHITE, cell_rect)
-        pygame.draw.rect(self.surface, BLACK, cell_rect, 1)
+        pygame.draw.rect(surface, WHITE, cell_rect)
+        pygame.draw.rect(surface, BLACK, cell_rect, 1)
 
         # Desenha o texto da célula
         font = pygame.font.Font(None, 24)
         text_surface = font.render(self.text, True, BLACK)
         text_rect = text_surface.get_rect(center=cell_rect.center)
-        self.surface.blit(text_surface, text_rect)
+        surface.blit(text_surface, text_rect)
