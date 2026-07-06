@@ -1,7 +1,7 @@
 import pygame
 import sys
 import pygame_classes.table as table
-import pygame_classes.basics as basics
+from pygame_classes.basics import Scene, Object, Sprite
 
 pygame.init()
 
@@ -12,15 +12,19 @@ pygame.display.set_caption("Simulador de Algoritmos de Substituição de Página
 running = True
 clock = pygame.time.Clock()
 
-objects = []
+scene1 = Scene(screen)
 
-memoria_principal = table.Table(screen, 200, 50, "Memória Principal")
-memoria_secundaria = table.Table(screen, 500, 50, "Memória Secundária")
+memoria_principal = table.Table(200, 50, "Memória Principal")
 cell1 = memoria_principal.create_cell("Página 1")
 cell2 = memoria_principal.create_cell("Página 2")
 cell3 = memoria_principal.create_cell("Página 3")
+cpu = Sprite(200, _height/2, "./views/images/CPU_icon.png", scale=0.5)
 
-objects.extend([cell1, cell2, cell3])
+scene1.add_object(memoria_principal)
+scene1.add_object(cell1)
+scene1.add_object(cell2)
+scene1.add_object(cell3)
+scene1.add_object(cpu)
 
 while running:
     for event in pygame.event.get():
@@ -29,11 +33,8 @@ while running:
 
     screen.fill((255, 255, 255))
 
-    for obj in objects:
-        obj.draw()
+    scene1.update(clock.get_time() / 1000.0)
 
-    memoria_principal.draw()
-    memoria_secundaria.draw()
     pygame.display.flip()
     clock.tick(60)
 
