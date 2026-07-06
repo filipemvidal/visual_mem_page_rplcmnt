@@ -1,5 +1,6 @@
 import pygame
 from pygame_classes.basics import Object
+from controllers.events import SimulationEvent
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -9,19 +10,25 @@ class Table(Object):
     cell_width = 100
     cell_height = 50
 
-    def __init__(self, x, y, title, cells = []):
+    def __init__(self, x, y, title, max_cells=5):
         super().__init__(x, y)
         self.title = title
-        self.cells = cells
+        self.cells = []
+        self.max_cells = max_cells
 
     def create_cell(self, text):
-        cell = Cell(0, (len(self.cells) + 1) * self.cell_height, self, text, self.cell_width, self.cell_height)
+        if len(self.cells) >= self.max_cells:
+            raise ValueError("Maximum number of cells reached")
+        y = (len(self.cells) + 1) * self.cell_height
+        cell = Cell(0, y, self, text, self.cell_width, self.cell_height)
         self.add_cell(cell)
         return cell
 
     def add_cell(self, cell):
         if not isinstance(cell, Cell):
             raise TypeError("cell must be an instance of Cell class")
+        if len(self.cells) >= self.max_cells:
+            raise ValueError("Maximum number of cells reached")
         self.cells.append(cell)
 
     def update(self, surface, delta_time):
@@ -31,6 +38,11 @@ class Table(Object):
         font = pygame.font.Font(None, 36)
         title_surface = font.render(self.title, True, BLACK, None)
         surface.blit(title_surface, (self.x, self.y))
+
+    def handle_simulation_event(self, event):
+        if not isinstance(event, SimulationEvent):
+            raise TypeError("event must be an instance of SimulationEvent class")
+        
 
 class Cell(Object):
     def __init__(self, _x, _y, table : Table, text, width=100, height=50):
