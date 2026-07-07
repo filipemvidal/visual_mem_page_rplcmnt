@@ -40,13 +40,21 @@ class Text(Object):
         self.font_size = font_size
         self.color = color
         self.font = pygame.font.Font(None, self.font_size)
+        self.visible = True
 
     def update(self, surface, delta_time):
         self.draw(surface)
 
     def draw(self, surface):
-        text_surface = self.font.render(self.text, True, self.color)
-        surface.blit(text_surface, (self.x, self.y))
+        if self.visible:
+            text_surface = self.font.render(self.text, True, self.color)
+            surface.blit(text_surface, (self.x, self.y))
+
+    def set_visible(self, visible):
+        self.visible = visible
+
+    def set_text(self, text):
+        self.text = text
 
 class Scene:
     def __init__(self, surface):
