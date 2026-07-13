@@ -1,6 +1,10 @@
 import pygame
 
-# Classe objeto, que será herdada por todas as outras classes, para que todas tenham a mesma estrutura básica.
+'''
+A classe Object representa um objeto padrão do PyGame.
+Para ela, precisamos saber a posição (x, y) do objeto e a cena na qual ele pertence.
+O método update é chamado a cada frame caso o objeto precise ser renderizado.
+'''
 class Object:
     def __init__(self, x, y):
         self.x = x
@@ -19,6 +23,10 @@ class Object:
         self.x = x
         self.y = y
 
+'''
+Uma variação da classe object, mas que renderiza uma imagem.
+Não foi utilizado na versão final.
+'''
 class Sprite(Object):
     def __init__(self, x, y, image_path, scale=1.0):
         super().__init__(x, y)
@@ -33,6 +41,10 @@ class Sprite(Object):
     def draw(self, surface):
         surface.blit(self.image, (self.x - self.offset_x, self.y - self.offset_y))
 
+'''
+A classe Text representa um texto.
+Foi criada posteriormente para facilitar o desenvolvimento, mas não foi utilizada na versão final.
+'''
 class Text(Object):
     def __init__(self, x, y, text, font_size=24, color=(0, 0, 0)):
         super().__init__(x, y)
@@ -56,6 +68,11 @@ class Text(Object):
     def set_text(self, text):
         self.text = text
 
+'''
+A classe Scene representa uma cena, ou seja, tudo que está sendo renderizado ao mesmo tempo.
+Sua função é atualizar todos os objetos que estão inseridos nela, chamando o método update de cada um.
+Apenas cria uma forma simples de lidar com os Objects, sem fazer bagunça no main.
+'''
 class Scene:
     def __init__(self, surface):
         self.surface = surface

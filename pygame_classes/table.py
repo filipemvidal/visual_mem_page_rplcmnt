@@ -5,6 +5,13 @@ from controllers.events import SimulationEvent, ViewSimulationEvent, ViewSimCell
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+'''
+A classe Table representará a memória RAM. 
+Dentro dela, teremos células, que representam as páginas de memória que estão carregadas.
+A classe lida com a manipulação das células, adicionando, criando ou limpando a lista.
+Além disso, recebe uma lista de eventos da simulação e traduz para eventos mais minuciosos,
+de maneira a deixar a visualização mais clara.
+'''
 class Table(Object):
     # São static, para evitar alteração do tamanho da célula quando mudar.
     cell_width = 100
@@ -42,6 +49,7 @@ class Table(Object):
             raise ValueError("Maximum number of cells reached")
         self.cells.append(cell)
 
+    # Função para limpar as células
     def clear_cells(self):
         for cell in self.cells:
             self.scene.remove_object(cell)
@@ -138,7 +146,10 @@ class Table(Object):
             index = len(self.events_tracked) - 1
         self.handle_view_event(self.events_tracked[index])
 
-
+'''
+A classe Cell representa uma página da memória, ou seja, as células da tabela.
+Ela lida com a renderização da célula, a sua cor, seu texto, tamanho...
+'''
 class Cell(Object):
     def __init__(self, _x, _y, table : Table, text, width=100, height=50):
         super().__init__(_x, _y)

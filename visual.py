@@ -1,17 +1,19 @@
 import pygame
 import sys
 import pygame_classes.table as table
-from pygame_classes.basics import Scene, Object, Sprite
+from pygame_classes.basics import Scene
 from algorithms import *
 from controllers.simulator import Simulator
 
-
+# Função para rodar a simulação e adicionar os eventos à tabela correspondente
 def run_simulation(algorithm_class, capacity: int, references: list[int], table_obj: table.Table):
     algo = algorithm_class(capacity=capacity)
     simulator = Simulator(algo)
     events = simulator.run(references)
     table_obj.handle_simulation_events(events)
 
+
+# Essa parte do código lida com a inicialização do PyGame.
 pygame.init()
 
 _width, _height = 1280, 720
@@ -23,14 +25,17 @@ clock = pygame.time.Clock()
 
 scene = Scene(screen)
 
+# Criação das tabelas para cada algoritmo
 FCFS_table = table.Table(160, 80, "FCFS/FIFO", 3)
 LRU_table = table.Table(540, 80, "LRU", 3)
 LFU_table = table.Table(960, 80, "LFU", 3)
 
+# Adicionando as tabelas à cena
 scene.add_object(FCFS_table)
 scene.add_object(LRU_table)
 scene.add_object(LFU_table)
 
+# Roda a simulação para cada algoritmo e adiciona os eventos às tabelas
 references = [1, 2, 3, 1, 4, 2, 5, 1]
 run_simulation(FCFS, capacity=3, references=references, table_obj=FCFS_table)
 run_simulation(LRU, capacity=3, references=references, table_obj=LRU_table)
@@ -40,6 +45,7 @@ FCFS_table.add_to_page_events(0)
 LRU_table.add_to_page_events(0)
 LFU_table.add_to_page_events(0)
 
+# Pega o número máximo para que o passador de "slides" não ultrapasse o número máximo de eventos.
 index = 0
 max_events_tracked = max(len(FCFS_table.events_tracked), len(LRU_table.events_tracked), len(LFU_table.events_tracked))
 
@@ -49,6 +55,7 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
+                # Um passo para frente
                 index += 1
                 if index >= max_events_tracked:
                     index = max_events_tracked - 1
@@ -56,6 +63,7 @@ while running:
                 LRU_table.add_to_page_events(index)
                 LFU_table.add_to_page_events(index)
             elif event.key == pygame.K_LEFT:
+                # Um passo para trás
                 index -= 1
                 if index < 0:
                     index = 0
@@ -65,10 +73,12 @@ while running:
 
     screen.fill((255, 255, 255))
 
-    scene.update(clock.get_time() / 1000.0)
+    scene.update(clock.get_time() / 1000.0) # Atualiza a cena com o delta_time em segundos
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(60) # Limita a 60 FPS
 
+
+# Finalização do PyGame e saída do programa
 pygame.quit()
 sys.exit()
