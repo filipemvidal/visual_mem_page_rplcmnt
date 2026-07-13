@@ -51,6 +51,8 @@ class Table(Object):
         self.draw(surface)
 
     def draw(self, surface):
+        rect = pygame.Rect(self.x, self.y + self.cell_height, self.cell_width, self.max_cells * self.cell_height)
+        pygame.draw.rect(surface, BLACK, rect, 2)
         font = pygame.font.Font(None, 36)
         title_surface = font.render(self.title, True, BLACK, None)
         surface.blit(title_surface, (self.x, self.y))
@@ -67,6 +69,17 @@ class Table(Object):
             if not isinstance(event, SimulationEvent):
                 raise TypeError("event must be an instance of SimulationEvent class")
 
+            frames_values = old_view_cells.copy()
+            for page in frames_values:
+                frames_values[page] = ViewSimCell(page=frames_values[page].page if frames_values[page].page is not None else None, detail="")
+
+            new_events.append(ViewSimulationEvent(
+                page=str(event.page) if event.page is not None else None,
+                frames=list(frames_values.values()),
+                page_fault=False
+            ))
+
+
             view_cells = {}
             if event.page_fault:
                 new_events.append(ViewSimulationEvent(
@@ -76,7 +89,7 @@ class Table(Object):
                 ))
 
             for page in event.frames:
-                view_cells[page] = ViewSimCell(page=page, detail="")
+                view_cells[page] = ViewSimCell(page=page if page is not None else None, detail="")
             if event.removed_page is not None:
                 old_view_cells_2 = old_view_cells.copy()
                 old_view_cells_2[event.removed_page].detail = "removed"
@@ -114,7 +127,8 @@ class Table(Object):
         else:
             self.procurando_text.set_visible(False)
         for view_cell in event.frames:
-            cell = self.create_cell(f"Página {view_cell.page}")
+            cell_text = f"Página {view_cell.page}" if view_cell.page is not None else ""
+            cell = self.create_cell(cell_text)
             cell.set_selected(view_cell.detail)
 
     def add_to_page_events(self, index):
