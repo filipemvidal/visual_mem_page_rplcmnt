@@ -5,7 +5,7 @@ from pygame_classes.basics import Scene
 from algorithms import *
 from controllers.simulator import Simulator
 
-class GUIView:
+class GuiView:
     # Função para rodar a simulação e adicionar os eventos à tabela correspondente
     def __run_simulation(self, algorithm_class, capacity: int, references: list[int], table_obj: table.Table):
         algo = algorithm_class(capacity=capacity)

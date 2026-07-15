@@ -21,7 +21,7 @@ O ambiente utilizado para desenvolvimento foi:
 
 ## Dependências
 
-A única dependência do projeto é a biblioteca gráfica pygame
+A única dependência do projeto é a biblioteca gráfica `pygame`.
 
 ## Como preparar o ambiente
 
@@ -37,7 +37,7 @@ Se o sistema usar `python` no lugar de `python3`, o comando pode ser ajustado co
 
 ## Como executar
 
-### Execução em console
+### Execução em console (CLI)
 
 O ponto de entrada em console é [main.py](main.py). Ele executa a simulação para os três algoritmos e imprime o resultado no terminal.
 
@@ -45,12 +45,12 @@ O ponto de entrada em console é [main.py](main.py). Ele executa a simulação p
 python main.py
 ```
 
-### Execução gráfica
+### Execução gráfica (GUI)
 
-A interface visual está em [visual.py](visual.py). Ela abre uma janela do PyGame com três tabelas, uma para cada algoritmo, e permite navegar pelos eventos com as teclas de seta esquerda e direita.
+O ponto de entrada da interafce visual também é [main.py](main.py), porém é necessário adicionar a flag `gui`. Ela abre uma janela do PyGame com três tabelas, uma para cada algoritmo, e permite navegar pelos eventos com as teclas de seta esquerda e direita.
 
 ```bash
-python visual.py
+python main.py gui
 ```
 
 ## Visão geral da arquitetura
@@ -59,9 +59,9 @@ O código está organizado em camadas simples:
 
 - `algorithms/`: implementação dos algoritmos de substituição de páginas.
 - `controllers/`: camada de simulação e definição dos eventos usados entre as partes do sistema.
-- `views/`: saída textual no console.
+- `views/`: execução em console e interface gráfica.
 - `pygame_classes/`: estrutura básica para renderização no PyGame.
-- `main.py` e `visual.py`: pontos de entrada para execução em console e interface gráfica.
+- `main.py`: ponto de entrada.
 
 ## Documentação das classes
 
@@ -174,10 +174,20 @@ Atributos principais:
 
 Métodos:
 
-- `display(event)`: imprime um evento individual de forma detalhada.
-- `record(step, event)`: armazena o evento com o número do passo.
-- `render()`: exibe uma tabela resumida com os acessos.
-- `summary()`: imprime o total de acessos, page faults, hits e a taxa de acerto.
+- `__run_simulation(algorithm_class, capacity, references)`: roda a simulação de um único algoritmo.
+- `run(references)`: roda a simulação dos três algoritmos.
+- `__record(step, event)`: armazena o evento com o número do passo.
+- `__render()`: exibe uma tabela resumida com os acessos.
+- `__summary()`: imprime o total de acessos, page faults, hits e a taxa de acerto.
+
+### `views.gui.GuiView`
+
+Responsável por gerenciar a interafce gráfica.
+
+Métodos:
+
+- `__run_simulation(algorithm_class, capacity, references)`: roda a simulação de um único algoritmo.
+- `run(references)`: inicializa o pygame e roda a simulação dos três algoritmos.
 
 ### `pygame_classes.basics.Object`
 
@@ -301,26 +311,4 @@ Os exemplos atuais usam a sequência:
 [1, 2, 3, 1, 4, 2, 5, 1]
 ```
 
-A capacidade da memória usada nos exemplos é `3`.
-
-## Observações
-
-- O projeto não possui testes automatizados no estado atual.
-- A interface gráfica depende do PyGame e de uma janela com foco para capturar as teclas de navegação.
-- A classe `ConsoleView.display` existe, mas a saída principal do console é feita por `record`, `render` e `summary`.
-
-## Estrutura do repositório
-
-```text
-main.py
-visual.py
-py_requirements.txt
-algorithms/
-controllers/
-pygame_classes/
-views/
-```
-
-## Licença
-
-Nenhuma licença foi definida no repositório até o momento.
+A capacidade da memória usada nos exemplos é de 3 páginas de memória.

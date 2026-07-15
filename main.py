@@ -3,8 +3,8 @@ import sys
 def main():
 
     if len(sys.argv) > 1 and sys.argv[1] == "gui":
-        from views.gui import GUIView
-        view = GUIView()
+        from views.gui import GuiView
+        view = GuiView()
         view.run([1, 2, 3, 1, 4, 2, 5, 1])
     else:
         from views.console import ConsoleView
