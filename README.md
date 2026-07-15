@@ -1,4 +1,4 @@
-# Visual Memory Page Replacement
+# Representação visual de algoritmos de substituição de página
 
 Projeto em Python para simular algoritmos de substituição de páginas e visualizar o comportamento da memória com duas saídas diferentes:
 
